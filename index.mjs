@@ -34,8 +34,6 @@ app.use(express.json());
 
 const authMiddleware = (req, res, next) => {
   try {
-    console.log("middleware hit")
-    console.log("Header:", req.headers.authorization);
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -44,7 +42,6 @@ const authMiddleware = (req, res, next) => {
 
     const token = authHeader.split(' ')[1]
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    console.log("Decoded: ", decoded)
 
     req.user = { id: decoded.id }
     next();
@@ -191,5 +188,3 @@ app.put("/:id/:name", authMiddleware, async (req, res) => {
 });
 
 app.listen(port, () => console.log("Server starting on port: " + port));
-// docker exec -it my-postgres psql -U <username> -l    // To list all dbs
-// docker exec -it my-postgres createdb -U postgres sql_class_2_db  // To create a db

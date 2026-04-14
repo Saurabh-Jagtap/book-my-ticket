@@ -1,141 +1,325 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stellar Seat Booking</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap");
-      body {
-        font-family: "Outfit", sans-serif;
-        background-color: #0f172a;
-        color: #f8fafc;
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stellar Seat Booking | Premium Cinema</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap");
+
+    :root {
+      --primary: #22d3ee;
+      --secondary: #818cf8;
+      --accent: #10b981;
+    }
+
+    body {
+      font-family: "Outfit", sans-serif;
+      background-color: #020617;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+
+    /* Animated Background Gradient */
+    .bg-animate {
+      background: radial-gradient(circle at top left, #1e1b4b 0%, #020617 40%, #020617 60%, #1e293b 100%);
+    }
+
+    /* The Cinema Screen Glow */
+    .screen-projection {
+      height: 70px;
+      width: 80%;
+      margin: 0 auto 60px;
+      background: linear-gradient(to bottom, rgba(34, 211, 238, 0.4), transparent);
+      border-top: 4px solid var(--primary);
+      filter: drop-shadow(0 0 20px rgba(34, 211, 238, 0.6));
+      border-radius: 100% 100% 0 0 / 100% 100% 0 0;
+      transform: perspective(500px) rotateX(-20deg);
+    }
+
+    /* Pulse animation for available seats */
+    @keyframes pulse-subtle {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
       }
-    </style>
-  </head>
-  <body
-    class="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
-  >
-    <div
-      class="max-w-7xl w-full bg-slate-800/80 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border border-slate-700/50"
-    >
-      <div class="text-center mb-10">
-        <h1
-          class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 mb-4 tracking-tight"
-        >
-          ChaiCode Cinema - Now Showing<br />
-          <br />
-          <span class="text-red-400">
-            <span class="font-bold">Dhurandhar The Revenge</span>
-          </span>
-        </h1>
-        <p class="text-slate-400 text-lg">Jassi ko ghar ki yaad kyu nhi aai?</p>
-      </div>
 
-      <div class="flex justify-center mb-10">
-        <div
-          class="bg-slate-900/50 rounded-full px-6 py-3 border border-slate-700 flex gap-8 items-center"
-        >
-          <div class="flex items-center gap-3">
-            <div
-              class="w-4 h-4 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.6)]"
-            ></div>
-            <span class="text-slate-300 font-medium tracking-wide"
-              >Available</span
-            >
-          </div>
-          <div class="w-px h-6 bg-slate-700"></div>
-          <div class="flex items-center gap-3">
-            <div
-              class="w-4 h-4 rounded-full bg-rose-500/20 border border-rose-500/50"
-            ></div>
-            <span class="text-slate-400 font-medium tracking-wide">Booked</span>
-          </div>
-        </div>
-      </div>
+      50% {
+        transform: scale(1.03);
+        opacity: 0.9;
+      }
+    }
 
-      <div class="flex justify-center">
-        <div
-          class="bg-slate-900/40 p-8 rounded-2xl border border-slate-700/50 shadow-inner"
-        >
-          <table
-            id="tbl"
-            class="border-separate border-spacing-4 mx-auto"
-          ></table>
-        </div>
+    .seat-available:hover {
+      animation: none;
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-animate flex flex-col items-center p-4 md:p-10">
+
+  <nav
+    class="w-full max-w-6xl mb-12 flex flex-col md:flex-row justify-between items-center gap-6 bg-slate-900/40 backdrop-blur-md border border-white/10 p-5 rounded-2xl shadow-2xl">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-10 h-10 bg-cyan-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+        </svg>
       </div>
+      <span
+        class="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+        Chaicode Cinema
+      </span>
     </div>
 
-    <script>
-      async function run() {
-        const tbl = document.getElementById("tbl");
-        const res = await fetch("/seats");
-        const resarray = await res.json();
-        const j = resarray.sort((a, b) => a.id - b.id);
-        let tr;
-        for (let i = 0; i < j.length; i++) {
-          if (i % 8 === 0) tr = document.createElement("tr");
+    <div id="auth-container" class="flex flex-wrap justify-center gap-3">
+      <input id="email" placeholder="Email address" type="text"
+        class="bg-slate-950/50 border border-slate-700 text-sm text-white px-4 py-2 rounded-xl focus:outline-none focus:border-cyan-500 transition-all w-48" />
+      <input id="password" placeholder="Password" type="password"
+        class="bg-slate-950/50 border border-slate-700 text-sm text-white px-4 py-2 rounded-xl focus:outline-none focus:border-cyan-500 transition-all w-48" />
+      <div class="flex gap-2">
+        <button onclick="register()"
+          class="px-5 py-2 text-sm font-semibold text-slate-300 hover:text-white transition-colors">Register</button>
+        <button onclick="login()"
+          class="px-6 py-2 text-sm font-bold bg-cyan-600 hover:bg-cyan-500 rounded-xl transition-all shadow-lg shadow-cyan-900/20 active:scale-95">Login</button>
+      </div>
+    </div>
+  </nav>
 
-          const td = document.createElement("td");
+  <main class="max-w-7xl w-full">
+    <div class="text-center mb-16">
+      <h2 class="text-sm uppercase tracking-[0.3em] text-cyan-400 font-semibold mb-2">Now Showing</h2>
+      <h1 class="text-5xl md:text-6xl font-black text-white mb-4 tracking-tighter">
+        Dhurandhar: <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-orange-400">The
+          Revenge</span>
+      </h1>
+      <p class="text-slate-400 italic text-lg opacity-80">"Jassi ko ghar ki yaad kyu nhi aai?"</p>
+    </div>
 
-          // Base aesthetic classes - added 'relative group' for tooltip positioning
-          const baseClasses =
-            "w-32 h-32 rounded-2xl text-center align-middle text-2xl font-bold transition-all duration-300 select-none relative group";
+    <div
+      class="relative bg-slate-900/30 backdrop-blur-sm rounded-[3rem] p-8 md:p-16 border border-white/5 shadow-inner">
 
-          if (j[i].isbooked) {
-            td.className = `${baseClasses} bg-rose-500/10 text-rose-500/60 border border-rose-500/20 cursor-not-allowed`;
-            td.innerHTML = `
+      <div class="relative mb-20">
+        <div class="screen-projection"></div>
+        <p
+          class="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs font-bold tracking-[0.5em] text-slate-500 uppercase">
+          Cinema Screen</p>
+      </div>
+
+      <div class="flex justify-center gap-8 mb-12">
+        <div class="flex items-center gap-3 group">
+          <div class="w-5 h-5 rounded-md bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)]"></div>
+          <span
+            class="text-slate-400 text-xs font-bold uppercase tracking-widest group-hover:text-emerald-400 transition-colors">Available</span>
+        </div>
+        <div class="flex items-center gap-3 group">
+          <div class="w-5 h-5 rounded-md bg-slate-800 border border-white/10"></div>
+          <span
+            class="text-slate-500 text-xs font-bold uppercase tracking-widest group-hover:text-slate-300 transition-colors">Occupied</span>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto pb-4">
+        <table id="tbl" class="border-separate border-spacing-3 md:border-spacing-5 mx-auto"></table>
+      </div>
+    </div>
+  </main>
+
+  <footer class="mt-20 mb-10 text-slate-600 text-sm">
+    &copy; 2026 Chaicode Cinema Experience &bull; Crafted with Precision
+  </footer>
+
+  <script>
+    async function register() {
+      let email = document.getElementById('email')
+      let password = document.getElementById('password')
+
+      const res = await fetch('/api/register', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.value,
+          password: password.value
+        })
+      })
+
+      const data = await res.json()
+      email.value = "";
+      password.value = "";
+      alert(data.message)
+    }
+
+    async function login() {
+      let email = document.getElementById('email')
+      let password = document.getElementById('password')
+
+      const res = await fetch('/api/login', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.value,
+          password: password.value
+        })
+      })
+
+      const data = await res.json()
+      email = "";
+      password = "";
+      if (data.token) {
+        localStorage.setItem('token', data.token)
+        updateAuthUI();
+        alert("Login Successful!")
+      } else {
+        alert(data.message)
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      updateAuthUI();
+      alert("Logged out successfully");
+    }
+
+    function updateAuthUI() {
+      const container = document.getElementById('auth-container');
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        // Premium "Profile Chip" UI
+        container.innerHTML = `
+      <div class="flex items-center gap-4 bg-slate-800/50 border border-white/10 py-1.5 pl-4 pr-2 rounded-2xl backdrop-blur-md">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <span class="text-slate-200 text-sm font-medium tracking-wide">Welcome back!</span>
+        </div>
+        
+        <div class="h-4 w-[1px] bg-slate-700 mx-1"></div>
+
+        <button onclick="logout()" 
+                class="px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-lg transition-all duration-200">
+          Logout
+        </button>
+      </div>
+    `;
+      } else {
+        // Return to the original Login/Register UI
+        container.innerHTML = `
+      <input id="email" placeholder="Email address" type="text" 
+             class="bg-slate-950/50 border border-slate-700 text-sm text-white px-4 py-2 rounded-xl focus:outline-none focus:border-cyan-500 transition-all w-48" />
+      <input id="password" placeholder="Password" type="password" 
+             class="bg-slate-950/50 border border-slate-700 text-sm text-white px-4 py-2 rounded-xl focus:outline-none focus:border-cyan-500 transition-all w-48" />
+      <div class="flex gap-2">
+        <button onclick="register()" class="px-5 py-2 text-sm font-semibold text-slate-300 hover:text-white transition-colors">Register</button>
+        <button onclick="login()" class="px-6 py-2 text-sm font-bold bg-cyan-600 hover:bg-cyan-500 rounded-xl transition-all shadow-lg shadow-cyan-900/20 active:scale-95">Login</button>
+      </div>
+    `;
+      }
+    }
+
+    async function run() {
+      const tbl = document.getElementById("tbl");
+      const res = await fetch("/seats");
+      const resarray = await res.json();
+      const j = resarray.sort((a, b) => a.id - b.id);
+      let tr;
+      for (let i = 0; i < j.length; i++) {
+        if (i % 8 === 0) tr = document.createElement("tr");
+
+        const td = document.createElement("td");
+
+        // UI Enhancement: Re-styled the class injection for a premium feel
+        const baseClasses = "w-14 h-14 md:w-20 md:h-20 rounded-xl text-center align-middle text-lg font-bold transition-all duration-200 select-none relative group cursor-pointer";
+
+        if (j[i].isbooked) {
+          td.className = `${baseClasses} bg-slate-800/50 text-slate-600 border border-white/5 cursor-not-allowed opacity-40`;
+          td.innerHTML = `
                     <span class="relative z-10">${j[i].id}</span>
-                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-slate-900 border border-slate-700 text-sm text-slate-300 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap shadow-2xl z-50 pointer-events-none font-normal shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
-                        Booked by: <span class="font-bold text-white ml-1">${j[i].name}</span>
-                        <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-[6px] border-transparent border-t-slate-700"></div>
-                        <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[2px] border-[5px] border-transparent border-t-slate-900"></div>
+                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 px-4 py-2 bg-slate-900 border border-slate-700 text-xs text-slate-300 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap shadow-2xl z-50 pointer-events-none">
+                        Occupied by: <span class="font-bold text-white">${j[i].name}</span>
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-slate-700"></div>
                     </div>
                 `;
-          } else {
-            td.className = `${baseClasses} bg-emerald-500 text-white border-2 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer hover:bg-emerald-400 hover:-translate-y-1.5 hover:shadow-[0_10px_25px_rgba(16,185,129,0.5)] active:scale-95 active:shadow-[0_0_10px_rgba(16,185,129,0.3)]`;
-            td.innerHTML = `<span class="relative z-10">${j[i].id}</span>`;
+        } else {
+          td.className = `${baseClasses} bg-emerald-500/90 text-white shadow-lg shadow-emerald-900/20 hover:bg-emerald-400 hover:-translate-y-2 hover:shadow-emerald-500/40 seat-available`;
+          td.innerHTML = `<span class="relative z-10 text-shadow-sm">${j[i].id}</span>`;
+        }
+
+        td.addEventListener("click", async function (e) {
+          const currentTd = e.currentTarget;
+          if (currentTd.classList.contains("cursor-not-allowed")) {
+            return;
           }
 
-          td.addEventListener("click", async function (e) {
-            const currentTd = e.currentTarget;
-            if (currentTd.classList.contains("cursor-not-allowed")) {
-              return; // Seat is already taken
+          try {
+            const id = j[i].id;
+            const name = prompt("Enter your name");
+            if (!name) return;
+
+            const token = localStorage.getItem('token')
+            if (!token) {
+              alert("Please login first!")
+              return;
+            }
+            const res = await fetch(`/${id}/${name}`, {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
+
+            if (!res.ok) {
+              const errorData = await res.json();
+              alert(errorData.message || "FAILED! Couldn't book!");
+              return;
             }
 
-            try {
-              const id = j[i].id; // Safe from loop closure
-              const name = prompt("Enter your name");
-              if (!name) return;
+            alert("Reservation Confirmed!");
 
-              const res = await fetch(`/${id}/${name}`, { method: "PUT" });
-              const data = await res.json();
-
-              if (data.error) {
-                alert("FAILED! Couldn't book! already booked.");
-              } else {
-                alert("Booked successfully!");
-                // Visually transition to booked state upon success
-                currentTd.className = `${baseClasses} bg-rose-500/10 text-rose-500/60 border border-rose-500/20 cursor-not-allowed`;
-                currentTd.innerHTML = `
+            // Visual Update
+            currentTd.className = `${baseClasses} bg-slate-800/50 text-slate-600 border border-white/5 cursor-not-allowed opacity-40`;
+            currentTd.innerHTML = `
                             <span class="relative z-10">${id}</span>
-                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-slate-900 border border-slate-700 text-sm text-slate-300 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap shadow-2xl z-50 pointer-events-none font-normal shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
-                                Booked by: <span class="font-bold text-white ml-1">${name}</span>
-                                <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-[6px] border-transparent border-t-slate-700"></div>
-                                <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[2px] border-[5px] border-transparent border-t-slate-900"></div>
+                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 px-4 py-2 bg-slate-900 border border-slate-700 text-xs text-slate-300 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap shadow-2xl z-50 pointer-events-none">
+                                Occupied by: <span class="font-bold text-white">${name}</span>
+                                <div class="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-slate-700"></div>
                             </div>
                         `;
-              }
-            } catch (ex) {
-              alert("error booking " + ex);
-            }
-          });
-          tr.appendChild(td);
-          tbl.appendChild(tr);
-        }
+          } catch (ex) {
+            alert("Error: " + ex);
+          }
+        });
+        tr.appendChild(td);
+        tbl.appendChild(tr);
       }
-      run();
-    </script>
-  </body>
+    }
+    run();
+  </script>
+</body>
+
 </html>

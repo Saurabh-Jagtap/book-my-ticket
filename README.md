@@ -1,5 +1,7 @@
 # 🎬 Book My Ticket (Backend-Focused Hackathon Project)
 
+<img width="1823" height="905" alt="book_my_ticket_ss" src="https://github.com/user-attachments/assets/cbd6cb39-8087-416f-bf5d-087987f7af0f" />
+
 ## 🚀 Overview
 This project is a simplified **Book My Ticket platform** built by extending an existing codebase.  
 The focus is on implementing **authentication, protected routes, and safe booking logic** using PostgreSQL.
